@@ -1,6 +1,6 @@
 const Answer = require("./models/answers");
-const Question = require("./models/question");
-const User = require("./models/user");
+const Question = require("./models/questions");
+const User = require("./models/users");
 
 const getAnswer = (_parent: any, args: any, deep: boolean = true) => {
   args = args.args;
@@ -31,7 +31,6 @@ const getAnswer = (_parent: any, args: any, deep: boolean = true) => {
 
 const getQuestion = (_parent: any, args: any, deep: boolean = true) => {
   args = args.args;
-  console.log(args);
   try {
     let question = Question.model.findById(args._id).toObject();
     if (deep) {
@@ -58,7 +57,6 @@ const getQuestion = (_parent: any, args: any, deep: boolean = true) => {
 
 const getUser = (_parent: any, args: any, deep: boolean = true) => {
   args = args.args;
-  console.log(args);
   try {
     let user = User.model.findById(args._id).toObject();
     if (deep) {
@@ -99,14 +97,14 @@ module.exports = {
     /// Answer
     createAnswer: Answer.createAnswer,
     updateAnswer: Answer.updateAnswer,
-    daleteAnswer: Answer.daleteAnswer,
+    deleteAnswer: Answer.deleteAnswer,
     /// Question
     createQuestion: Question.createQuestion,
     updateQuestion: Question.updateQuestion,
-    daleteQuestion: Question.daleteQuestion,
+    deleteQuestion: Question.deleteQuestion,
     /// User
     createUser: User.createUser,
     updateUser: User.updateUser,
-    daleteUser: User.daleteUser,
+    deleteUser: User.deleteUser,
   },
 };

@@ -4,24 +4,24 @@
 
 
 type QueryResolver {
-    getAnswer(AnswerRDInp): Answer!
-    getQuestion(QuestionRDInp): Question!
-    getUser(UserRDInp): User!
+    getAnswer(args: AnswerRDInp): Answer!
+    getQuestion(args: QuestionRDInp): Question!
+    getUser(args: UserRDInp): User!
 }
 
 type MutationResolver {
     # Answer
-    createAnswer(AnswerCreateInp): Boolean!
-    updateAnswer(AnswerUpdateInp): Boolean!
-    deleteAnswer(AnswerRDInp): Boolean!
+    createAnswer(args: AnswerCreateInp): Boolean!
+    updateAnswer(args: AnswerUpdateInp): Boolean!
+    deleteAnswer(args: AnswerRDInp): Boolean!
     # Question
-    createQuestion(QuestionCreateInp): Boolean!
-    updateQuestion(QuestionUpdateInp): Boolean!
-    deleteQuestion(QuestionRDInp): Boolean!
+    createQuestion(args: QuestionCreateInp): Boolean!
+    updateQuestion(args: QuestionUpdateInp): Boolean!
+    deleteQuestion(args: QuestionRDInp): Boolean!
     # User
-    createUser(UserCUInp): Boolean!
-    updateUser(UserCUInp): Boolean!
-    deleteUser(UserRDInp): Boolean!
+    createUser(args: UserCUInp): Boolean!
+    updateUser(args: UserCUInp): Boolean!
+    deleteUser(args: UserRDInp): Boolean!
 }
 
 
