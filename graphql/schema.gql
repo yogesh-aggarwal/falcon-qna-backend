@@ -1,0 +1,31 @@
+# import Answer, AnswerRDInp, AnswerCreateInp, AnswerUpdateInp from "./answer.gql"
+# import Question, QuestionRDInp, QuestionCreateInp, QuestionUpdateInp from "./question.gql"
+# import User, UserRDInp, UserCUInp from "./user.gql"
+
+
+type QueryResolver {
+    getAnswer(AnswerRDInp): Answer!
+    getQuestion(QuestionRDInp): Question!
+    getUser(UserRDInp): User!
+}
+
+type MutationResolver {
+    # Answer
+    createAnswer(AnswerCreateInp): Boolean!
+    updateAnswer(AnswerUpdateInp): Boolean!
+    deleteAnswer(AnswerRDInp): Boolean!
+    # Question
+    createQuestion(QuestionCreateInp): Boolean!
+    updateQuestion(QuestionUpdateInp): Boolean!
+    deleteQuestion(QuestionRDInp): Boolean!
+    # User
+    createUser(UserCUInp): Boolean!
+    updateUser(UserCUInp): Boolean!
+    deleteUser(UserRDInp): Boolean!
+}
+
+
+schema {
+    query: QueryResolver
+    mutation: MutationResolver
+}

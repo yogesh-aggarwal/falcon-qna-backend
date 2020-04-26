@@ -1,0 +1,22 @@
+type User {
+  _id: String! # Username
+  isBanned: Boolean!
+  reputation: Int!
+  name: String!
+  bio: String!
+  email: String!
+  questions: [Question!]!
+  answers: [Answer!]!
+  joinedOn: String!
+  level: Int!
+}
+
+input UserRDInp {
+  _id: String!
+}
+
+input UserCUInp {
+  name: String
+  bio: String
+  email: String
+}

@@ -1,0 +1,28 @@
+type Question {
+  _id: String!
+  title: String!
+  body: String!
+  views: String!
+  isSuspended: Boolean!
+  votes: Int!
+  owner: User!
+  tags: [String!]!
+  postedOn: String
+  editedBy: [User!]!
+  editedOn: String!
+}
+
+input QuestionRDInp {
+  _id: String!
+}
+
+input QuestionCreateInp {
+  title: String!
+  body: String!
+  owner: String!
+}
+
+input QuestionUpdateInp {
+  title: String!
+  body: String!
+}

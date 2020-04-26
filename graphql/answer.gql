@@ -1,0 +1,22 @@
+type Answer {
+  _id: String!
+  body: String!
+  owner: User!
+  votes: Int!
+  postedOn: String
+  editedBy: [User!]!
+  editedOn: String!
+}
+
+input AnswerRDInp {
+  _id: String!
+}
+
+input AnswerCreateInp {
+  body: String!
+  owner: String!
+}
+
+input AnswerUpdateInp {
+  body: String!
+}
