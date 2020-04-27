@@ -4,9 +4,8 @@ const Schema = mongoose.Schema;
 
 const Question = new Schema({
   _id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    default: mongoose.Types.ObjectId(Date.now()),
+    type: Schema.Types.ObjectId,
+    default: mongoose.Types.ObjectId,
   },
   title: {
     type: String,
@@ -19,12 +18,12 @@ const Question = new Schema({
   views: {
     type: Number,
     required: true,
-    default: 0
+    default: 0,
   },
   isSuspended: {
     type: Boolean,
     required: true,
-    default: false
+    default: false,
   },
   owner: {
     type: String,
@@ -33,7 +32,12 @@ const Question = new Schema({
   tags: {
     type: [String],
     required: true,
-    default: []
+    default: [],
+  },
+  answers: {
+    type: [String],
+    required: true,
+    default: [],
   },
   votes: {
     type: Number,
@@ -48,6 +52,7 @@ const Question = new Schema({
   editedBy: {
     type: [String],
     required: true,
+    default: [],
   },
   editedOn: {
     type: Date,
@@ -58,33 +63,37 @@ const Question = new Schema({
 
 const QuestionModel = mongoose.model("Question", Question, "Questions");
 
-const createQuestion = (_parent: any, args: any) => {
+const createQuestion = async (_parent: any, args: any) => {
   try {
     args = args.args;
-    QuestionModel.create(
-      {
-        _id: args.uname,
-        name: args.name,
-        email: args.email,
-      },
-      () => {}
-    );
+    await QuestionModel.create({
+      name: args.name,
+      title: args.title,
+      body: args.body,
+      tags: args.tags,
+      email: args.email,
+      owner: args.owner,
+    });
+    return true;
+  } catch (err) {
+    throw err;
+    return false;
+  }
+};
+
+const updateQuestion = async (_parent: any, args: any) => {
+  try {
+    await QuestionModel.updateOne({ _id: args.args._id }, args.args, () => {});
+    return true;
   } catch {
     return false;
   }
 };
 
-const updateQuestion = (_parent: any, args: any) => {
+const deleteQuestion = async (_parent: any, args: any) => {
   try {
-    QuestionModel.updateOne({ _id: args.args._id }, args.args, () => {});
-  } catch {
-    return false;
-  }
-};
-
-const deleteQuestion = (_parent: any, args: any) => {
-  try {
-    QuestionModel.updateOne(args.args._id, () => {});
+    await QuestionModel.updateOne(args.args._id, () => {});
+    return true;
   } catch {
     return false;
   }

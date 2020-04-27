@@ -15,6 +15,7 @@ input AnswerRDInp {
 input AnswerCreateInp {
   body: String!
   owner: String!
+  question: String!
 }
 
 input AnswerUpdateInp {

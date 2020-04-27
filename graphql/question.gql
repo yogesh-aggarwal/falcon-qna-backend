@@ -6,6 +6,7 @@ type Question {
   isSuspended: Boolean!
   votes: Int!
   owner: User!
+  answers: [Answer!]!
   tags: [String!]!
   postedOn: String
   editedBy: [User!]!
@@ -20,9 +21,10 @@ input QuestionCreateInp {
   title: String!
   body: String!
   owner: String!
+  tags: [String!]
 }
 
 input QuestionUpdateInp {
-  title: String!
-  body: String!
+  title: String
+  body: String
 }

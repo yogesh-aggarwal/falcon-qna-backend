@@ -2,20 +2,19 @@ const Answer = require("./models/answers");
 const Question = require("./models/questions");
 const User = require("./models/users");
 
-const getAnswer = (_parent: any, args: any, deep: boolean = true) => {
+const getAnswer = async (_parent: any, args: any, deep: boolean = true) => {
   args = args.args;
-  console.log(args);
   try {
-    let answer = Answer.model.findById(args._id).toObject();
+    let answer = (await Answer.model.findById(args._id)).toObject();
     if (deep) {
-      answer["owner"] = getUser(
+      answer["owner"] = await getUser(
         null,
         { args: { _id: answer["owner"] } },
         (deep = false)
       );
       let editedBy = answer["editedBy"];
       for (let i = 0; i < editedBy.length; i++) {
-        editedBy[i] = getUser(
+        editedBy[i] = await getUser(
           null,
           { args: { _id: editedBy[i] } },
           (deep = false)
@@ -29,19 +28,19 @@ const getAnswer = (_parent: any, args: any, deep: boolean = true) => {
   }
 };
 
-const getQuestion = (_parent: any, args: any, deep: boolean = true) => {
+const getQuestion = async (_parent: any, args: any, deep: boolean = true) => {
   args = args.args;
   try {
-    let question = Question.model.findById(args._id).toObject();
+    let question = (await Question.model.findById(args._id)).toObject();
     if (deep) {
-      question["owner"] = getUser(
+      question["owner"] = await getUser(
         null,
         { args: { _id: question["owner"] } },
         (deep = false)
       );
       let editedBy = question["editedBy"];
       for (let i = 0; i < editedBy.length; i++) {
-        editedBy[i] = getUser(
+        editedBy[i] = await getUser(
           null,
           { args: { _id: editedBy[i] } },
           (deep = false)
@@ -50,20 +49,21 @@ const getQuestion = (_parent: any, args: any, deep: boolean = true) => {
       question["editedBy"] = editedBy;
     }
     return question;
+    setTimeout(() => {}, 10000);
   } catch (err) {
     return false;
   }
 };
 
-const getUser = (_parent: any, args: any, deep: boolean = true) => {
+const getUser = async (_parent: any, args: any, deep: boolean = true) => {
   args = args.args;
   try {
-    let user = User.model.findById(args._id).toObject();
+    let user = (await User.model.findById(args._id)).toObject();
     if (deep) {
       //? For Answers
       let answers = user["answers"];
       for (let i = 0; i < answers.length; i++) {
-        answers[i] = getAnswer(
+        answers[i] = await getAnswer(
           null,
           { args: { _id: answers[i] } },
           (deep = false)
@@ -73,7 +73,7 @@ const getUser = (_parent: any, args: any, deep: boolean = true) => {
       //? For Questions
       let questions = user["questions"];
       for (let i = 0; i < questions.length; i++) {
-        questions[i] = getQuestion(
+        questions[i] = await getQuestion(
           null,
           { args: { _id: questions[i] } },
           (deep = false)
@@ -83,6 +83,7 @@ const getUser = (_parent: any, args: any, deep: boolean = true) => {
     }
     return user;
   } catch (err) {
+    throw err;
     return false;
   }
 };

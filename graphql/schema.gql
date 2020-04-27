@@ -19,8 +19,8 @@ type MutationResolver {
     updateQuestion(args: QuestionUpdateInp): Boolean!
     deleteQuestion(args: QuestionRDInp): Boolean!
     # User
-    createUser(args: UserCUInp): Boolean!
-    updateUser(args: UserCUInp): Boolean!
+    createUser(args: UserCreateInp): Boolean!
+    updateUser(args: UserUpdateInp): Boolean!
     deleteUser(args: UserRDInp): Boolean!
 }
 

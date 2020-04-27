@@ -15,7 +15,14 @@ input UserRDInp {
   _id: String!
 }
 
-input UserCUInp {
+input UserCreateInp {
+  uname: String!
+  name: String!
+  bio: String!
+  email: String!
+}
+
+input UserUpdateInp {
   name: String
   bio: String
   email: String

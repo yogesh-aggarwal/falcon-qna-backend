@@ -4,9 +4,8 @@ const Schema = mongoose.Schema;
 
 const Answer = new Schema({
   _id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    default: mongoose.Types.ObjectId(Date.now()),
+    type: Schema.Types.ObjectId,
+    default: mongoose.Types.ObjectId,
   },
   body: {
     type: String,
@@ -29,6 +28,7 @@ const Answer = new Schema({
   editedBy: {
     type: [String],
     required: true,
+    default: []
   },
   editedOn: {
     type: Date,
@@ -39,25 +39,28 @@ const Answer = new Schema({
 
 const AnswerModel = mongoose.model("Answer", Answer, "Answers");
 
-const createAnswer = (_parent: any, args: any) => {
+const createAnswer = async (_parent: any, args: any) => {
   try {
-    AnswerModel.create(args.args, () => {});
+    await AnswerModel.create(args.args);
+    return true;
   } catch {
     return false;
   }
 };
 
-const updateAnswer = (_parent: any, args: any) => {
+const updateAnswer = async (_parent: any, args: any) => {
   try {
-    AnswerModel.updateOne({ _id: args.args._id }, args.args, () => {});
+    await AnswerModel.updateOne({ _id: args.args._id }, args.args, () => {});
+    return true;
   } catch {
     return false;
   }
 };
 
-const deleteAnswer = (_parent: any, args: any) => {
+const deleteAnswer = async (_parent: any, args: any) => {
   try {
-    AnswerModel.updateOne(args.args._id, () => {});
+    await AnswerModel.updateOne(args.args._id, () => {});
+    return true;
   } catch {
     return false;
   }

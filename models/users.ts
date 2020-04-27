@@ -47,35 +47,36 @@ const User = new Schema({
   },
 });
 
-const UserModel = mongoose.model("User", User, "users");
+const UserModel = mongoose.model("User", User, "Users");
 
-const createUser = (_parent: any, args: any) => {
+const createUser = async (_parent: any, args: any) => {
   try {
     args = args.args;
-    UserModel.create(
-      {
-        _id: args.uname,
-        name: args.name,
-        email: args.email,
-      },
-      () => {}
-    );
+    let a = await UserModel.create({
+      _id: args.uname,
+      name: args.name,
+      email: args.email,
+    });
+    return true;
+  } catch (err) {
+    throw err;
+    return false;
+  }
+};
+
+const updateUser = async (_parent: any, args: any) => {
+  try {
+    await UserModel.updateOne({ _id: args.args._id }, args.args, () => {});
+    return true;
   } catch {
     return false;
   }
 };
 
-const updateUser = (_parent: any, args: any) => {
+const deleteUser = async (_parent: any, args: any) => {
   try {
-    UserModel.updateOne({ _id: args.args._id }, args.args, () => {});
-  } catch {
-    return false;
-  }
-};
-
-const deleteUser = (_parent: any, args: any) => {
-  try {
-    UserModel.updateOne(args.args._id, () => {});
+    await UserModel.updateOne(args.args._id, () => {});
+    return true;
   } catch {
     return false;
   }
