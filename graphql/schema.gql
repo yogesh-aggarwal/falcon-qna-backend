@@ -1,31 +1,33 @@
+# import Votes from "./global.gql"
 # import Answer, AnswerRDInp, AnswerCreateInp, AnswerUpdateInp from "./answer.gql"
 # import Question, QuestionRDInp, QuestionCreateInp, QuestionUpdateInp from "./question.gql"
 # import User, UserRDInp, UserCUInp from "./user.gql"
 
-
 type QueryResolver {
-    getAnswer(args: AnswerRDInp): Answer!
-    getQuestion(args: QuestionRDInp): Question!
-    getUser(args: UserRDInp): User!
+  getAnswer(args: AnswerRDInp): Answer!
+  getQuestion(args: QuestionRDInp): Question!
+  getUser(args: UserRDInp): User!
 }
 
 type MutationResolver {
-    # Answer
-    createAnswer(args: AnswerCreateInp): Boolean!
-    updateAnswer(args: AnswerUpdateInp): Boolean!
-    deleteAnswer(args: AnswerRDInp): Boolean!
-    # Question
-    createQuestion(args: QuestionCreateInp): Boolean!
-    updateQuestion(args: QuestionUpdateInp): Boolean!
-    deleteQuestion(args: QuestionRDInp): Boolean!
-    # User
-    createUser(args: UserCreateInp): Boolean!
-    updateUser(args: UserUpdateInp): Boolean!
-    deleteUser(args: UserRDInp): Boolean!
+  # Answer
+  createAnswer(args: AnswerCreateInp): Boolean!
+  updateAnswer(args: AnswerUpdateInp): Boolean!
+  deleteAnswer(args: AnswerRDInp): Boolean!
+  # Question
+  createQuestion(args: QuestionCreateInp): Boolean!
+  updateQuestion(args: QuestionUpdateInp): Boolean!
+  deleteQuestion(args: QuestionRDInp): Boolean!
+  # User
+  createUser(args: UserCreateInp): Boolean!
+  updateUser(args: UserUpdateInp): Boolean!
+  deleteUser(args: UserRDInp): Boolean!
+  # Globals
+  voteAnswer(args: VoteAnswerInp): Boolean!
+  voteQuestion(args: VoteQuestionInp): Boolean!
 }
 
-
 schema {
-    query: QueryResolver
-    mutation: MutationResolver
+  query: QueryResolver
+  mutation: MutationResolver
 }

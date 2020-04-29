@@ -40,9 +40,26 @@ const Question = new Schema({
     default: [],
   },
   votes: {
-    type: Number,
+    type: {
+      net: {
+        type: Number,
+        required: true,
+      },
+      upvoters: {
+        type: String,
+        required: true,
+      },
+      downvoters: {
+        type: String,
+        required: true,
+      },
+    },
     required: true,
-    default: 0,
+    default: {
+      net: 0,
+      upvoters: [],
+      downvoters: [],
+    },
   },
   postedOn: {
     type: Date,

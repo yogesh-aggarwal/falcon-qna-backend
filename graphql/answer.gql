@@ -2,7 +2,7 @@ type Answer {
   _id: String!
   body: String!
   owner: User!
-  votes: Int!
+  votes: Votes!
   postedOn: String
   editedBy: [User!]!
   editedOn: String!

@@ -1,0 +1,17 @@
+type Votes {
+  net: Int!
+  upvoters: [String!]!
+  downvoters: [String!]!
+}
+
+input VoteAnswerInp {
+  uid: String!
+  answerId: String!
+  score: Int!
+}
+
+input VoteQuestionInp {
+  uid: String!
+  questionId: String!
+  score: Int!
+}

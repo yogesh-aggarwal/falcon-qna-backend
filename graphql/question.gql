@@ -4,7 +4,7 @@ type Question {
   body: String!
   views: String!
   isSuspended: Boolean!
-  votes: Int!
+  votes: Votes!
   owner: User!
   answers: [Answer!]!
   tags: [String!]!
