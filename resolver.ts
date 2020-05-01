@@ -194,9 +194,10 @@ async function getAllQuestions(_parent: any, args: any) {
   }
   final.sort((ques1, ques2) => {
     let dateWeight: number = (ques1.postedOn - ques2.postedOn) / 1e7;
-    let voteWeight: number = ques1.votes.net - ques2.votes.net;
-    console.log(dateWeight, voteWeight);
-    return dateWeight + voteWeight;
+    let voteWeight: number = ques1.votes.net - ques2.votes.net + 1e2;
+    let answersWeight: number =
+      (ques1.answers.length - ques2.answers.length + 8) / 1e3;
+    return dateWeight + voteWeight + answersWeight;
   });
   return final.reverse();
 }
