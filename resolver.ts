@@ -53,6 +53,9 @@ const getQuestion = async (_parent: any, args: any, deep: boolean = true) => {
         );
       } catch {}
     }
+    newAnswers.sort((ans1, ans2) => {
+      return ans2.votes.net - ans1.votes.net;
+    });
     question["answers"] = newAnswers;
   }
   return question;
@@ -189,6 +192,12 @@ async function getAllQuestions(_parent: any, args: any) {
   for (let question of questions) {
     final.push(await getQuestion(null, { args: { _id: question._id } }));
   }
+  final.sort((ques1, ques2) => {
+    let dateWeight: number = (ques1.postedOn - ques2.postedOn) / 1e7;
+    let voteWeight: number = ques1.votes.net - ques2.votes.net;
+    console.log(dateWeight, voteWeight);
+    return dateWeight + voteWeight;
+  });
   return final.reverse();
 }
 
