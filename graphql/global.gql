@@ -15,3 +15,8 @@ input VoteQuestionInp {
   questionId: String!
   score: Int!
 }
+
+input CheckUserAnswerableInp {
+  uid: String!
+  questionId: String!
+}

@@ -21,10 +21,11 @@ input QuestionCreateInp {
   title: String!
   body: String!
   owner: String!
-  tags: [String!]
+  tags: String!
 }
 
 input QuestionUpdateInp {
   title: String
   body: String
+  tags: String
 }

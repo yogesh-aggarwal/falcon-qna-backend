@@ -1,4 +1,5 @@
 import * as mongoose from "mongoose";
+const Question = require("./questions");
 
 const Schema = mongoose.Schema;
 
@@ -12,6 +13,10 @@ const Answer = new Schema({
     required: true,
   },
   owner: {
+    type: String,
+    required: true,
+  },
+  question: {
     type: String,
     required: true,
   },
@@ -58,8 +63,15 @@ const AnswerModel = mongoose.model("Answer", Answer, "Answers");
 
 const createAnswer = async (_parent: any, args: any) => {
   try {
-    await AnswerModel.create(args.args);
-    return true;
+    args = args.args;
+    let newAnswer = await new AnswerModel(args);
+    newAnswer.save();
+    Question.model.updateOne  (
+      { _id: args.question },
+      { $push: { answers: newAnswer._id } },
+      () => {}
+    );
+    return newAnswer._id;
   } catch {
     return false;
   }

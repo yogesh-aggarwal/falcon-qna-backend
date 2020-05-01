@@ -83,18 +83,18 @@ const QuestionModel = mongoose.model("Question", Question, "Questions");
 const createQuestion = async (_parent: any, args: any) => {
   try {
     args = args.args;
-    await QuestionModel.create({
+    let newQuestion = await new QuestionModel({
       name: args.name,
       title: args.title,
       body: args.body,
-      tags: args.tags,
+      tags: args.tags.split(",").filter((x: string) => (x ? true : false)),
       email: args.email,
       owner: args.owner,
     });
-    return true;
+    newQuestion.save();
+    return newQuestion._id;
   } catch (err) {
     throw err;
-    return false;
   }
 };
 

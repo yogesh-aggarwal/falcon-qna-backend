@@ -1,21 +1,24 @@
-# import Votes from "./global.gql"
+# import Votes, checkUserAnswerable, checkUserAnswerableInp from "./global.gql"
 # import Answer, AnswerRDInp, AnswerCreateInp, AnswerUpdateInp from "./answer.gql"
 # import Question, QuestionRDInp, QuestionCreateInp, QuestionUpdateInp from "./question.gql"
 # import User, UserRDInp, UserCUInp from "./user.gql"
 
 type QueryResolver {
   getAnswer(args: AnswerRDInp): Answer!
+  getAllQuestions: [Question!]!
   getQuestion(args: QuestionRDInp): Question!
   getUser(args: UserRDInp): User!
+  # Globals
+  checkUserAnswerable(args: CheckUserAnswerableInp): Boolean!
 }
 
 type MutationResolver {
   # Answer
-  createAnswer(args: AnswerCreateInp): Boolean!
+  createAnswer(args: AnswerCreateInp): String!
   updateAnswer(args: AnswerUpdateInp): Boolean!
   deleteAnswer(args: AnswerRDInp): Boolean!
   # Question
-  createQuestion(args: QuestionCreateInp): Boolean!
+  createQuestion(args: QuestionCreateInp): String!
   updateQuestion(args: QuestionUpdateInp): Boolean!
   deleteQuestion(args: QuestionRDInp): Boolean!
   # User

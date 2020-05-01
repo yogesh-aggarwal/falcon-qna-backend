@@ -4,96 +4,86 @@ const User = require("./models/users");
 
 const getAnswer = async (_parent: any, args: any, deep: boolean = true) => {
   args = args.args;
-  try {
-    let answer = (await Answer.model.findById(args._id)).toObject();
-    if (deep) {
-      answer["owner"] = await getUser(
+  let answer = (await Answer.model.findById(args._id)).toObject();
+  if (deep) {
+    answer["owner"] = await getUser(
+      null,
+      { args: { _id: answer["owner"] } },
+      (deep = false)
+    );
+    let editedBy = answer["editedBy"];
+    for (let i = 0; i < editedBy.length; i++) {
+      editedBy[i] = await getUser(
         null,
-        { args: { _id: answer["owner"] } },
+        { args: { _id: editedBy[i] } },
         (deep = false)
       );
-      let editedBy = answer["editedBy"];
-      for (let i = 0; i < editedBy.length; i++) {
-        editedBy[i] = await getUser(
-          null,
-          { args: { _id: editedBy[i] } },
-          (deep = false)
-        );
-      }
-      answer["editedBy"] = editedBy;
     }
-    return answer;
-  } catch (err) {
-    return false;
+    answer["editedBy"] = editedBy;
   }
+  return answer;
 };
 
 const getQuestion = async (_parent: any, args: any, deep: boolean = true) => {
   args = args.args;
-  try {
-    let question = (await Question.model.findById(args._id)).toObject();
-    if (deep) {
-      question["owner"] = await getUser(
+  let question = (await Question.model.findById(args._id)).toObject();
+  if (deep) {
+    question["owner"] = await getUser(
+      null,
+      { args: { _id: question["owner"] } },
+      (deep = false)
+    );
+
+    let editedBy = question["editedBy"];
+    for (let i = 0; i < editedBy.length; i++) {
+      editedBy[i] = await getUser(
         null,
-        { args: { _id: question["owner"] } },
+        { args: { _id: editedBy[i] } },
         (deep = false)
       );
-      let editedBy = question["editedBy"];
-      for (let i = 0; i < editedBy.length; i++) {
-        editedBy[i] = await getUser(
-          null,
-          { args: { _id: editedBy[i] } },
-          (deep = false)
-        );
-      }
-      question["editedBy"] = editedBy;
-      let answers = question["answers"];
-      for (let i = 0; i < answers.length; i++) {
-        answers[i] = await getAnswer(
-          null,
-          { args: { _id: answers[i] } },
-          (deep = false)
-        );
-      }
-      question["answers"] = answers;
     }
-    return question;
-  } catch (err) {
-    return false;
+    question["editedBy"] = editedBy;
+
+    const answers: Array<string> = question["answers"];
+    let newAnswers = [];
+    for (let i = 0; i < answers.length; i++) {
+      try {
+        newAnswers.push(
+          await getAnswer(null, { args: { _id: answers[i] } }, (deep = false))
+        );
+      } catch {}
+    }
+    question["answers"] = newAnswers;
   }
+  return question;
 };
 
 const getUser = async (_parent: any, args: any, deep: boolean = true) => {
   args = args.args;
-  try {
-    let user = (await User.model.findById(args._id)).toObject();
-    if (deep) {
-      //? For Answers
-      let answers = user["answers"];
-      for (let i = 0; i < answers.length; i++) {
-        answers[i] = await getAnswer(
-          null,
-          { args: { _id: answers[i] } },
-          (deep = false)
-        );
-      }
-      user["answers"] = answers;
-      //? For Questions
-      let questions = user["questions"];
-      for (let i = 0; i < questions.length; i++) {
-        questions[i] = await getQuestion(
-          null,
-          { args: { _id: questions[i] } },
-          (deep = false)
-        );
-      }
-      user["questions"] = questions;
+  let user = (await User.model.findById(args._id)).toObject();
+  if (deep) {
+    //? For Answers
+    let answers = user["answers"];
+    for (let i = 0; i < answers.length; i++) {
+      answers[i] = await getAnswer(
+        null,
+        { args: { _id: answers[i] } },
+        (deep = false)
+      );
     }
-    return user;
-  } catch (err) {
-    throw err;
-    return false;
+    user["answers"] = answers;
+    //? For Questions
+    let questions = user["questions"];
+    for (let i = 0; i < questions.length; i++) {
+      questions[i] = await getQuestion(
+        null,
+        { args: { _id: questions[i] } },
+        (deep = false)
+      );
+    }
+    user["questions"] = questions;
   }
+  return user;
 };
 
 const voteAnswer = async (_parent: any, args: any) => {
@@ -192,11 +182,33 @@ const voteQuestion = async (_parent: any, args: any) => {
   return true;
 };
 
+async function getAllQuestions(_parent: any, args: any) {
+  const questions = await Question.model.find({});
+
+  let final = [];
+  for (let question of questions) {
+    final.push(await getQuestion(null, { args: { _id: question._id } }));
+  }
+  return final.reverse();
+}
+
+async function checkUserAnswerable(_parent: any, args: any) {
+  args = args.args;
+  const answer = await Answer.model.findOne({
+    owner: args.uid,
+    question: args.questionId,
+  });
+  return answer ? false : true;
+}
+
 module.exports = {
   QueryResolver: {
     getAnswer: getAnswer,
+    getAllQuestions: getAllQuestions,
     getQuestion: getQuestion,
     getUser: getUser,
+    /// Globals
+    checkUserAnswerable: checkUserAnswerable,
   },
   MutationResolver: {
     /// Answer
