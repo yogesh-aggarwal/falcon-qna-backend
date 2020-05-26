@@ -14,6 +14,10 @@ We love contributions 💖! If you want to contribute to the project you have to
   ```
   ts-node prepareData.ts
   ```
+* Run the development server:
+  ```
+  npm start
+  ```
 * Now, you are ready with your suite & ready to contribute 🚀.
 
 Read the contribution guidelines for more information.
